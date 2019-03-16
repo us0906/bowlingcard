@@ -1,4 +1,4 @@
-package de.ulrichschulte.bowlinggame.controller;
+package de.ulrichschulte.bowlinggame.Logic;
 
 public class FrameInfo {
     String result1; // <nix>, 1-9, X

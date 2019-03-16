@@ -1,4 +1,6 @@
-package de.ulrichschulte.bowlinggame.controller;
+package de.ulrichschulte.bowlinggame.Logic;
+
+import de.ulrichschulte.bowlinggame.Logic.Frame;
 
 public class Game {
 

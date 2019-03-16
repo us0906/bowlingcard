@@ -1,4 +1,4 @@
-package de.ulrichschulte.bowlinggame.controller;
+package de.ulrichschulte.bowlinggame.Logic;
 
 public class Frame {
 

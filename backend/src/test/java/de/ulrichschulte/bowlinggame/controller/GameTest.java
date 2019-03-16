@@ -1,5 +1,6 @@
 package de.ulrichschulte.bowlinggame.controller;
 
+import de.ulrichschulte.bowlinggame.Logic.Game;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

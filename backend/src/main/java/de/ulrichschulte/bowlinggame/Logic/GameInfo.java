@@ -1,8 +1,10 @@
-package de.ulrichschulte.bowlinggame.controller;
+package de.ulrichschulte.bowlinggame.Logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import de.ulrichschulte.bowlinggame.Logic.FrameInfo;
+import de.ulrichschulte.bowlinggame.Logic.Game;
 
 public class GameInfo {
     Game game;
