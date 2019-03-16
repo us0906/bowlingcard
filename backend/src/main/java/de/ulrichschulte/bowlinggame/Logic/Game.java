@@ -1,20 +1,26 @@
 package de.ulrichschulte.bowlinggame.Logic;
 
-import de.ulrichschulte.bowlinggame.Logic.Frame;
+import java.util.List;
 
 public class Game {
 
-    public static int MAXFRAMES = 10;
-    public static int MAXROLLS = 21;
+    private static int MAXFRAMES = 10;
+    private static int MAXROLLS = 21;
 
-    private Frame frames[] = new Frame[MAXFRAMES];
-    private int rolls[] = new int[MAXROLLS];
+    private Frame[] frames = new Frame[MAXFRAMES];
+    private int[] rolls = new int[MAXROLLS];
     private int frameIndex = 0;
     private int rollsIndex = 0;
 
-    public Game() {
+    public Game(List<Integer> pins) {
         for (int i = 0; i < MAXFRAMES; i++) {
             frames[i] = new Frame(i == (MAXFRAMES-1)) ;
+        }
+
+        if (pins != null && pins.size() > 0) {
+            for (int i = 0; i < pins.size(); i++) {
+                this.bowl(pins.get(i));
+            }
         }
     }
 
@@ -57,9 +63,22 @@ public class Game {
     public String getBowlingCard() {
         String result = "";
         for (int i = 0; i < MAXFRAMES; i++) {
-            result += frames[i].getScores() + "| ";
+            result += frames[i].getScores(" ") + "| " + getFrameScore(i) + "| ";
         }
+        result += getTotalScore();
         return result;
     }
 
+    public String getBowlingCardAsJson() {
+        String result = "[";
+        for (int i = 0; i < MAXFRAMES; i++) {
+            result += "{ scores: [" + frames[i].getScores(", ") + "] , " + "score: " + getFrameScore(i) + "} ";
+            if (i < MAXFRAMES-1) {
+                result += ", ";
+            }
+        }
+        result += ", total:" + getTotalScore();
+        result += "]";
+        return result;
+    }
 }

@@ -32,7 +32,7 @@ public class Frame {
         }
     }
 
-    private boolean isStrike() {
+    public boolean isStrike() {
         return (results[0] == 10) && (results[1] == 0);
     }
 
@@ -45,10 +45,14 @@ public class Frame {
         return  result;
     }
 
-    public String getScores() {
-        String result = results[0] + " " + results[1];
+    public String getResult(int i) {
+        return String.format("%d",results[i]);
+    }
+
+    public String getScores(String sep) {
+        String result = results[0] + sep + results[1];
         if (maxThrows == 3) {
-            result += " " + results[2];
+            result += sep + results[2];
         }
         return result;
     }
