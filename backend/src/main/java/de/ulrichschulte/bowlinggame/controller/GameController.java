@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 public class GameController {
-    @GetMapping (path = "/play")
+    @GetMapping (path = "/api/play")
     public String getBowlingCard(@RequestParam(value="pins") List<Integer> pins) {
         Game game = new Game(pins);
         return game.getBowlingCardAsJson();

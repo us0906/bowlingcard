@@ -70,15 +70,15 @@ public class Game {
     }
 
     public String getBowlingCardAsJson() {
-        String result = "[";
+        String result = "{ \"frames\": [";
         for (int i = 0; i < MAXFRAMES; i++) {
-            result += "{ scores: [" + frames[i].getScores(", ") + "] , " + "score: " + getFrameScore(i) + "} ";
+            result += "{ \"scores\": [" + frames[i].getScores(", ") + "] , " + " \"score\": " + getFrameScore(i) + "} ";
             if (i < MAXFRAMES-1) {
                 result += ", ";
             }
         }
-        result += ", total:" + getTotalScore();
         result += "]";
+        result += ", \"total\":" + getTotalScore() + "}";
         return result;
     }
 }

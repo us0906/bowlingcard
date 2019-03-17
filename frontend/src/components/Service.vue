@@ -1,5 +1,5 @@
 <template>
-  <div class="service">
+<div class="service">
     <h1>{{ msg }}</h1>
     <h2>REST service call results</h2>
 
@@ -30,8 +30,8 @@
         AXIOS.get(`/hello`)
           .then(response => {
             // JSON responses are automatically parsed.
-            this.response = response.data
-            console.log(response.data)
+            this.response = response.data;
+            console.log(response.data);
           })
           .catch(e => {
             this.errors.push(e)
