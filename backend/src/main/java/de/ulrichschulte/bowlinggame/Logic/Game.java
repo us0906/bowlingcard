@@ -9,10 +9,10 @@ public class Game {
 
     private Frame[] frames = new Frame[MAXFRAMES];
     private int[] rolls = new int[MAXROLLS];
-    private int frameIndex = 0;
+    private int activeFrameIndex = 0;
     private int rollsIndex = 0;
 
-    public Game(List<Integer> pins) {
+    public Game(List<Integer> pins) throws BowlingGameException{
         for (int i = 0; i < MAXFRAMES; i++) {
             frames[i] = new Frame(i == (MAXFRAMES-1)) ;
         }
@@ -24,9 +24,12 @@ public class Game {
         }
     }
 
-    public void bowl(int resultingPins) {
-        if (frames[frameIndex].addResult(resultingPins)) {
-            frameIndex++;
+    public void bowl(int resultingPins) throws BowlingGameException{
+        if (activeFrameIndex > 10) {
+            throw new BowlingGameException("Spiel ist bereit zu ende!");
+        }
+        if (frames[activeFrameIndex].addResult(resultingPins)) {
+            activeFrameIndex++;
         };
         rolls[rollsIndex] = resultingPins;
         rollsIndex++;
@@ -72,13 +75,28 @@ public class Game {
     public String getBowlingCardAsJson() {
         String result = "{ \"frames\": [";
         for (int i = 0; i < MAXFRAMES; i++) {
-            result += "{ \"scores\": [" + frames[i].getScores(", ") + "] , " + " \"score\": " + getFrameScore(i) + "} ";
+            result += "{ \"scores\": [" + frames[i].getScores(", ") + "] , " +
+                    " \"score\": " + getFrameScore(i) + ", " +
+                    " \"strike\": " + frames[i].isStrike() + ", " +
+                    " \"spare\": " + frames[i].isSpare()  +
+                    "} ";
             if (i < MAXFRAMES-1) {
                 result += ", ";
             }
         }
         result += "]";
+        result += ", \"activeFrame\": " + this.activeFrameIndex;
+        result += ", \"activeFrameScore\": " + this.activeFrameScore();
+
         result += ", \"total\":" + getTotalScore() + "}";
         return result;
+    }
+
+    private String activeFrameScore() {
+        if (this.activeFrameIndex < MAXFRAMES) {
+            return this.frames[this.activeFrameIndex].getResult(0);
+        } else {
+            return "0";
+        }
     }
 }

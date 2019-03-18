@@ -1,5 +1,7 @@
 package de.ulrichschulte.bowlinggame.Logic;
 
+import com.sun.tools.javac.main.Option;
+
 public class Frame {
 
     private int[] results;
@@ -10,15 +12,20 @@ public class Frame {
     /*
       returns true, when frame is full
      */
-    public boolean addResult(int resultPins) {
-            results[index] = resultPins;
-
-            if (!isLastFrame && isStrike() && index == 0) {
-                return true;
+    public boolean addResult(int resultPins) throws BowlingGameException {
+        if (maxThrows == 2 && index > 0) {
+            if (results[0] + resultPins > 10) {
+                throw  new BowlingGameException("Pro Frame können maximal 10 pins umgeworfen werden!");
             }
+        }
+        results[index] = resultPins;
 
-            index++;
-            return index >= maxThrows;
+        if (!isLastFrame && isStrike() && index == 0) {
+            return true;
+        }
+
+        index++;
+        return index >= maxThrows;
     }
 
     public Frame (boolean isLastFrame) {
@@ -34,6 +41,10 @@ public class Frame {
 
     public boolean isStrike() {
         return (results[0] == 10) && (results[1] == 0);
+    }
+
+    public boolean isSpare() {
+        return (results[0] + results[1] == 10) && (results[0] != 10);
     }
 
     public int getScore () {

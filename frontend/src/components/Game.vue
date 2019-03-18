@@ -1,55 +1,64 @@
 <template>
 <div class="game">
-    <h1>{{ msg }}</h1>
-    <h4>your score: </h4>
-    <button @click="bowl(0)">0</button>
-    <button @click="bowl(1)">1</button>
-    <button @click="bowl(2)">2</button>
-    <button @click="bowl(3)">3</button>
-    <button @click="bowl(4)">4</button>
-    <button @click="bowl(5)">5</button>
-    <button @click="bowl(6)">6</button>
-    <button @click="bowl(7)">7</button>
-    <button @click="bowl(8)">8</button>
-    <button @click="bowl(9)">9</button>
-    <button @click="bowl(10)">10</button>
+    <h4>Bitte gib dein Bowling-Ergebnis an - das sind die Pins, die du umgeworfen hast. </h4>
 
+    <template v-if="response.activeFrame < 10" v-for="(n, index) in 11">
+        <button v-if="((10-response.activeFrameScore)>=index) || (response.activeFrame == 9)" @click="bowl(index)"> {{ index }}</button>
+        <button v-else @click="bowl(index)" disabled> {{ index }}</button>
+        <span>&nbsp;</span>
+    </template>
+    <span>&nbsp;</span>
     <button @click="clear()">Clear</button>
-
-    <h4>Backend response: {{ response }}</h4>
-
-    <h4>
-        scoringCard
-    </h4>
-    <table style="width:100%">
+    <p>
+    <h4>Dein Score lautet:</h4>
+    <div>
+      <table style="width:75%" border="8">
         <tr>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-            <th>6</th>
-            <th>7</th>
-            <th>8</th>
-            <th>9</th>
-            <th>10</th>
+            <th>Frame</th>
+            <th v-for="(n, index) in 10"width="10%">{{index+1}}</th>
         </tr>
-        <tr id="example-2">
-            <td v-for="(item) in response.frames">
-                {{ item.scores[0] }}
+        <tr>
+            <td>
+                <table>
+                    <tr><td>Pins</td></tr>
+                    <tr><td>Score</td></tr>
+                </table>
+            </td>
+            <td v-for="(item,index) in response.frames">
+                <table border="0" width="100%">
+                    <tr>
+                        <template v-if="index < 9">
+                            <template v-if="item.strike">
+                                <td width="50%"></td>
+                                <td width="50%">X</td>
+                            </template>
+                            <template v-else-if="item.spare">
+                                <td width="50%">{{ item.scores[0] }}</td>
+                                <td width="50%">/</td>
+                            </template>
+                            <template v-else>
+                                <td>{{ item.scores[0] }}</td>
+                                <td>{{ item.scores[1] }}</td>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <td v-if="item.scores[0] === 10">X</td>
+                            <td v-else>{{ item.scores[0] }}</td>
+                            <td v-if="item.scores[1] === 10">X</td>
+                            <td v-else>{{ item.scores[1] }}</td>
+                            <td v-if="item.scores[2] === 10">X</td>
+                            <td v-else>{{ item.scores[2] }}</td>
+                        </template>
+                    </tr>
+                </table>
+                <table border="0" width="100%">
+                    <td> <b>{{ item.score}}</b></td>
+                </table>
             </td>
         </tr>
-
-        <tr id="example-2">
-            <td v-for="(item) in response.frames">
-                {{ item.scores[1] }}
-            </td>
-        </tr>
-    </table>
-    <h2>
-        Total: {{ response.total}}
-    </h2>
-  </div>
+       </table>
+    </div>
+</div>
 </template>
 
 <script>
@@ -62,8 +71,20 @@
     data () {
       return {
           pins: [],
-          msg: 'Call Game REST-Services:',
-          response: [],
+          pinsInFrame: 0,
+          response:  { frames: [
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                  { scores: [ 0, 0, 0 ], score: 0, strike: false, spare: false }
+                  ],
+              activeFrame: 0, activeFrameScore: 0, total: 0 },
           errors: []
       }
     },
@@ -71,26 +92,42 @@
       // Fetches posts when the component is created.
         clear() {
             this.pins = [];
-            this.response = "";
+            this.response = { frames: [
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
+                    { scores: [ 0, 0, 0 ], score: 0, strike: false, spare: false }
+                ],
+                activeFrame: 0, activeFrameScore: 0, total: 0 };
+            this.pinsInFrame = 0;
         },
         bowl(numberOfPins) {
-            this.pins.push (numberOfPins);
-            this.response = this.pins.join(', ');
-            let url = '/play?pins='+this.pins.join ('&pins=');
-            console.log ('url: '+url);
-            AXIOS.get(url)
-                .then(response => {
-                    // JSON responses are automatically parsed.
-                    this.response = response.data;
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    this.errors.push(e)
-                })
 
+            if (this.pinsInFrame + numberOfPins <= 10) {
+                this.pins.push (numberOfPins);
+                this.response = this.pins.join(', ');
+                let url = '/play?pins='+this.pins.join ('&pins=');
+                console.log ('url: '+url);
+                AXIOS.get(url)
+                    .then(response => {
+                        // JSON responses are automatically parsed.
+                        this.response = response.data;
+                        console.log(response.data);
+
+                    })
+                    .catch(e => {
+                        this.errors.push(e)
+                    })
+            }
         },
         callGameRestService () {
-            url = '/play?pins='+this.pins.join ('?pins=');
+            url = '/play';
             AXIOS.get(url)
                 .then(response => {
                     // JSON responses are automatically parsed.
