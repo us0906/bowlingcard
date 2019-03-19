@@ -1,5 +1,6 @@
 package de.ulrichschulte.bowlinggame.controller;
 
+import de.ulrichschulte.bowlinggame.Logic.BowlingGameException;
 import de.ulrichschulte.bowlinggame.Logic.Game;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +12,14 @@ public class GameTest {
 
     @Before
     public void setUp () {
-        game = new Game();
+        try {
+            game = new Game(null);
+        } catch (BowlingGameException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void playMany (int pins, int count) {
+    public void playMany (int pins, int count) throws BowlingGameException {
         System.out.println(String.format("%d würfe mit %d Pins", count, pins));
         for (int i = 0; i < count; i++) {
             game.bowl(pins);
@@ -27,19 +32,19 @@ public class GameTest {
     }
 
     @Test
-    public void whenNoPins_returnZeroPoints() {
+    public void whenNoPins_returnZeroPoints() throws BowlingGameException {
         playMany( 0, 21) ;
         assertEquals(0, game.getTotalScore());
     }
 
     @Test
-    public void when1PinEach_return21Points () {
+    public void when1PinEach_return21Points () throws BowlingGameException {
         playMany( 1, 20) ;
         assertEquals(20,game.getTotalScore());
     }
 
     @Test
-    public void whenLastFrameStrike_Allow3Bowls () {
+    public void whenLastFrameStrike_Allow3Bowls () throws BowlingGameException{
         playMany(1,18);
         assertEquals(18, game.getTotalScore());
         game.bowl(10);
@@ -49,31 +54,31 @@ public class GameTest {
     }
 
     @Test
-    public void when1Strike_return10() {
+    public void when1Strike_return10() throws BowlingGameException{
         playMany( 10, 1);
         assertEquals( 10, game.getTotalScore());
     }
 
     @Test
-    public void when2Strike_return10() {
+    public void when2Strike_return10() throws BowlingGameException{
         playMany( 10, 2);
         assertEquals( 30, game.getTotalScore());
     }
 
     @Test
-    public void when2Bowls_return2 () {
+    public void when2Bowls_return2 () throws BowlingGameException{
         playMany(3,2);
         assertEquals(6,game.getTotalScore());
     }
 
     @Test
-    public void whenPerfectGame_return300_and12Rolls () {
+    public void whenPerfectGame_return300_and12Rolls () throws BowlingGameException{
         playMany(10,12);
         assertEquals( 300, game.getTotalScore());
     }
 
     @Test
-    public void testSample() {
+    public void testSample() throws BowlingGameException{
         game.bowl(10);
         assertEquals(10, game.getTotalScore());
         game.bowl(7);
@@ -110,8 +115,6 @@ public class GameTest {
         assertEquals(148, game.getFrameScore(8));
         assertEquals(167, game.getFrameScore(9));
 
-
     }
-
 
 }

@@ -12,10 +12,11 @@ public class Game {
     private int activeFrameIndex = 0;
     private int rollsIndex = 0;
 
-    public Game(List<Integer> pins) throws BowlingGameException{
+    public Game(List<Integer> pins) throws BowlingGameException {
         for (int i = 0; i < MAXFRAMES; i++) {
             frames[i] = new Frame(i == (MAXFRAMES-1)) ;
         }
+
 
         if (pins != null && pins.size() > 0) {
             for (int i = 0; i < pins.size(); i++) {
