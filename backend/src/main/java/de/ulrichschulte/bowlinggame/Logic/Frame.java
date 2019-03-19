@@ -1,7 +1,5 @@
 package de.ulrichschulte.bowlinggame.Logic;
 
-import com.sun.tools.javac.main.Option;
-
 public class Frame {
 
     private int[] results;
