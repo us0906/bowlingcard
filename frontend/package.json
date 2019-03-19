@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "BowlingCard: A sample App with SpringBoot and vue js",
   "author": "Ulrich Schulte <Ulrich@ulrich-schulte.net>",
   "private": true,
