@@ -71,7 +71,6 @@
     data () {
       return {
           pins: [],
-          pinsInFrame: 0,
           response:  { frames: [
                   { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
                   { scores: [ 0, 0 ], score: 0, strike: false, spare: false },
@@ -108,31 +107,16 @@
             this.pinsInFrame = 0;
         },
         bowl(numberOfPins) {
-
-            if (this.pinsInFrame + numberOfPins <= 10) {
-                this.pins.push (numberOfPins);
-                this.response = this.pins.join(', ');
-                let url = '/play?pins='+this.pins.join ('&pins=');
-                console.log ('url: '+url);
-                AXIOS.get(url)
-                    .then(response => {
-                        // JSON responses are automatically parsed.
-                        this.response = response.data;
-                        console.log(response.data);
-
-                    })
-                    .catch(e => {
-                        this.errors.push(e)
-                    })
-            }
-        },
-        callGameRestService () {
-            url = '/play';
+            this.pins.push (numberOfPins);
+            this.response = this.pins.join(', ');
+            let url = '/play?pins='+this.pins.join ('&pins=');
+            console.log ('url: '+url);
             AXIOS.get(url)
                 .then(response => {
                     // JSON responses are automatically parsed.
                     this.response = response.data;
                     console.log(response.data);
+
                 })
                 .catch(e => {
                     this.errors.push(e)
