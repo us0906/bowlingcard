@@ -22,3 +22,6 @@ Scorebord is to be refreshed after every roll.
 Simplicity: single player only, the GUI is not the focus of this task, can be very basic, but it should show the total score and the score of each frame. It should also be possible to do a roll (e.g. enter number of pins) using this gui. Errors need to be displayed.
 The project needs to be easily compiled & packaged, have a proper build system. A short description on how to get it to run is also helpful.
 The code should be well structured, readable and testable. Bonus: implement automated tests
+
+See https://github.com/us0906/bowlingcard/blob/master/README-original.md for details to run and build.
+
